@@ -86,7 +86,7 @@ class FloatWindow: NSWindow {
         makeKeyAndOrderFront(self)
         NSAnimationContext.beginGrouping()
         NSAnimationContext.current().completionHandler = completion
-        NSAnimationContext.current().duration = 0.2
+        NSAnimationContext.current().duration = 0.1
         animator().alphaValue = isIn ? 1.0 : 0.0
         NSAnimationContext.endGrouping()
     }
