@@ -94,6 +94,7 @@ extension ViewController: FloatDelegate {
                 guard let url = savePanel.url else { return }
                 
                 let bitmapRep = NSBitmapImageRep(cgImage: image)
+                bitmapRep.size = floatWindow.frame.size
                 let data = bitmapRep.representation(using: .PNG, properties: [:])
                 do {
                     try data?.write(to: url, options: .atomicWrite)
