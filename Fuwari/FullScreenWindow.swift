@@ -32,18 +32,10 @@ class FullScreenWindow: NSWindow {
         makeKeyAndOrderFront(self)
         
         contentView = captureGuideView
-        
-        NSEvent.addLocalMonitorForEvents(matching: .keyDown) {
-            (event: NSEvent) -> NSEvent? in
-            if event.keyCode == UInt16(kVK_Escape) {
-                self.captureDelegate?.didCanceled()
-            }
-            return event
-        }
     }
     
     func startCapture() {
-        orderBack(nil)
+        makeKeyAndOrderFront(nil)
         captureGuideView.cursorPoint = NSPoint(x: NSEvent.mouseLocation().x - frame.origin.x, y: NSEvent.mouseLocation().y)
     }
     
@@ -63,7 +55,13 @@ class FullScreenWindow: NSWindow {
     override func mouseUp(with event: NSEvent) {
         capture(rect: captureGuideView.guideWindowRect)
     }
-    
+
+    override func keyDown(with event: NSEvent) {
+        if event.keyCode == UInt16(kVK_Escape) {
+            self.captureDelegate?.didCanceled()
+        }
+    }
+
     private func capture(rect: NSRect) {
         var upRightPoint = NSPoint.zero
         
@@ -93,6 +91,14 @@ class FullScreenWindow: NSWindow {
             captureOffsetY = -(cgRect.origin.y - upRightPoint.y + rect.height)
         }
         captureDelegate?.didCaptured(rect: CGRect(x: cgRect.origin.x, y: captureOffsetY, width: cgRect.width, height: cgRect.height), image: cgImage)
+    }
+
+    override var canBecomeKey: Bool {
+        return true
+    }
+
+    override var canBecomeMain: Bool {
+        return true
     }
 }
 
