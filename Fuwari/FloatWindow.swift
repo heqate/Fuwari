@@ -20,7 +20,7 @@ class FloatWindow: NSWindow {
     init(contentRect: NSRect, styleMask style: NSWindowStyleMask = .borderless, backing bufferingType: NSBackingStoreType = .buffered, defer flag: Bool = false, image: CGImage) {
         super.init(contentRect: contentRect, styleMask: style, backing: bufferingType, defer: flag)
         
-        level = Int(CGWindowLevelForKey(.maximumWindow))
+        level = Int(CGWindowLevelForKey(.floatingWindow))
         collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         isMovableByWindowBackground = true
         hasShadow = true

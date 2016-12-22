@@ -88,9 +88,7 @@ extension ViewController: FloatDelegate {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd-HHmmss"
         savePanel.nameFieldStringValue = "screenshot-\(formatter.string(from: Date())).png"
-        
-        floatWindow.level = Int(CGWindowLevelForKey(.minimumWindow))
-        
+        savePanel.level = Int(CGWindowLevelForKey(.modalPanelWindow))
         savePanel.begin { (result) in
             if result == NSFileHandlingPanelOKButton {
                 guard let url = savePanel.url else { return }
@@ -102,8 +100,6 @@ extension ViewController: FloatDelegate {
                 } catch {
                     print(error.localizedDescription)
                 }
-            } else {
-                floatWindow.level = Int(CGWindowLevelForKey(.maximumWindow))
             }
         }
     }
