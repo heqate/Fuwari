@@ -47,8 +47,6 @@ class ViewController: NSViewController {
     }
 
     @IBAction private func didSelectCaptureButton(_: NSButton) {
-        NSCursor.hide()
-        
         fullScreenWindows.forEach { fullScreenWindow in
             fullScreenWindow.startCapture()
         }
@@ -66,14 +64,12 @@ class ViewController: NSViewController {
 extension ViewController: CaptureDelegate {
     func didCaptured(rect: NSRect, image: CGImage) {
         createFloatWindow(rect: rect, image: image)
-        NSCursor.unhide()
         fullScreenWindows.forEach {
             $0.orderOut(nil)
         }
     }
     
     func didCanceled() {
-        NSCursor.unhide()
         fullScreenWindows.forEach {
             $0.orderOut(nil)
         }

@@ -41,9 +41,22 @@ class CaptureGuideView: NSView {
         NSRectFill(frame)
         
         drawCaptureArea()
-        drawCursor()
+        drawCursorPosition()
     }
-    
+
+    override func mouseEntered(with event: NSEvent) {
+        NSCursor.crosshair().push()
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        NSCursor.pop()
+    }
+
+    override func updateTrackingAreas() {
+        let trackingArea = NSTrackingArea(rect: bounds, options: [.mouseEnteredAndExited, .activeAlways], owner: self, userInfo: nil)
+        addTrackingArea(trackingArea)
+    }
+
     private func drawCaptureArea() {
         if startPoint != .zero {
             NSColor(red: 0, green: 0, blue: 0, alpha: 0.25).set()
@@ -55,18 +68,7 @@ class CaptureGuideView: NSView {
         }
     }
     
-    private func drawCursor() {
-        NSColor.darkGray.set()
-        let cursorRectWidth = NSRect(x: cursorPoint.x - cursorSize / 2, y: cursorPoint.y, width: cursorSize, height: 1)
-        NSRectFill(cursorRectWidth)
-        let cursorRectHeight = NSRect(x: cursorPoint.x, y: cursorPoint.y - cursorSize / 2, width: 1, height: cursorSize)
-        NSRectFill(cursorRectHeight)
-        
-        NSColor(red: 0, green: 0, blue: 0, alpha: 0.25).set()
-        let cursorCenter = NSRect(x: cursorPoint.x - cursorSize / 4 + cursorGuideWidth / 2, y: cursorPoint.y - cursorSize / 4 + cursorGuideWidth / 2, width: cursorSize / 2, height: cursorSize / 2)
-        let path = NSBezierPath(ovalIn: cursorCenter)
-        path.fill()
-        
+    private func drawCursorPosition() {
         (Int(cursorPoint.x).description as NSString).draw(at: NSPoint(x: cursorPoint.x + cursorSize / 2, y: cursorPoint.y - cursorSize / 2), withAttributes: [NSFontAttributeName : cursorFont, NSShadowAttributeName : coordinateLabelShadow])
         (Int(frame.height - cursorPoint.y).description as NSString).draw(at: NSPoint(x: cursorPoint.x + cursorSize / 2, y: cursorPoint.y - cursorSize), withAttributes: [NSFontAttributeName : cursorFont, NSShadowAttributeName : coordinateLabelShadow])
     }
